@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar'
 import type { ReactElement } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import Home from './src/page/Home'
 
 /**
  *
@@ -9,8 +9,7 @@ import { StyleSheet, Text, View } from 'react-native'
 export default function App(): ReactElement<View> {
   return (
     <View style={styles.container} testID='main-view'>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Home />
     </View>
   )
 }

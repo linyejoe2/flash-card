@@ -33,7 +33,9 @@ module.exports = {
     'no-unused-vars': "warn",
     "space-before-function-paren": "off",
     "@typescript-eslint/space-before-function-paren": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/consistent-type-definitions": "off"
   },
   "settings": {
     "react": {
