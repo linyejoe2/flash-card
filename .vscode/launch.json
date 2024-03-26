@@ -1,0 +1,10 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "env": {
+        "Path": "${env:Path};C:\\Users\\linye\\AppData\\Roaming\\nvm\\v20.11.1;"
+      }
+    }
+  ]
+}
