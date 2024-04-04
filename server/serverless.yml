@@ -1,0 +1,49 @@
+service: flash-card-serverless-service
+frameworkVersion: "3"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-northeast-2
+  profile: developer
+
+functions:
+  test:
+    handler: src/handler.test
+    events:
+      - httpApi:
+          path: /flash-card/test
+          method: get
+  getCard:
+    handler: src/handler.getCard
+    events:
+      - httpApi:
+          path: /flash-card/card/get
+          method: any
+      - httpApi:
+          path: /flash-card/card/get/{card_id}
+          method: any
+  addCard:
+    handler: src/handler.addCard
+    events:
+      - httpApi:
+          path: /flash-card/card/add
+          method: post
+
+resources:
+  Resources:
+    FlashCardTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: flash_card
+        AttributeDefinitions:
+          - AttributeName: card_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: card_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
