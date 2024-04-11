@@ -17,7 +17,8 @@ module.exports = {
         ".eslintrc.{js,cjs}"
       ],
       "parserOptions": {
-        "sourceType": "script"
+        // "sourceType": "script",
+        "project": ["./tsconfig.json"]
       }
     }
   ],
@@ -27,15 +28,17 @@ module.exports = {
   },
   "plugins": [
     "react",
-    "unused-imports"
+    "unused-imports",
   ],
   "rules": {
     'no-unused-vars': "warn",
+    "unused-imports/no-unused-imports": "error",
     "space-before-function-paren": "off",
     "@typescript-eslint/space-before-function-paren": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-function-return-type": "warn",
-    "@typescript-eslint/consistent-type-definitions": "off"
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/no-confusing-void-expression": "off"
   },
   "settings": {
     "react": {

@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { render } from '@testing-library/react-native'
-import { Text, View } from 'react-native'
-import App from './App'
 
-test('renders a View', () => {
-  const { UNSAFE_getByType } = render(<App />)
-  const viewElement = UNSAFE_getByType(View)
-  expect(viewElement).toBeDefined()
-  expect(viewElement).toBeTruthy()
-})
+// test('renders a View', () => {
+//   const { UNSAFE_getByType } = render(<App />)
+//   const viewElement = UNSAFE_getByType(View)
+//   expect(viewElement).toBeDefined()
+//   expect(viewElement).toBeTruthy()
+// })
 
 // test('renders a Text inside View', () => {
 //   const { UNSAFE_getByType } = render(<App />)

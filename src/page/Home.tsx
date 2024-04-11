@@ -1,59 +1,44 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, View, Dimensions } from 'react-native'
+import { View } from 'react-native'
+import type { NavigationProp, ParamListBase } from '@react-navigation/native'
+import { IconButton, List } from 'react-native-paper'
+import { theme } from '../Theme'
 
-const DATA = [
-  { id: '1', title: 'Item 1' },
-  { id: '2', title: 'Item 2' },
-  { id: '3', title: 'Item 3' },
-  { id: '4', title: 'Item 4' },
-  { id: '5', title: 'Item 5' },
-  { id: '6', title: '操你ㄇ' }
-  // Add more items as needed
-]
+type Props = {
+  navigation: NavigationProp<ParamListBase>
+}
 
-const { width: screenWidth } = Dimensions.get('window')
-
-type ItemProps = { title: string }
-
-const Item = ({ title }: ItemProps) => (
-  <View style={[styles.item, { width: screenWidth }]}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-)
-
-const Home = () => {
-  const renderItem = ({ item }: { item: ItemProps }) => (
-    <Item title={item.title} />
-  )
-
+const Home: React.FC<Props> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{ flexGrow: 1 }}
+    <View style={{ flex: 1, margin: 20, marginTop: 0 }}>
+      <List.Section style={{ alignSelf: 'flex-start', width: '100%' }}>
+        {/* <List.Subheader>Some ˇtitle</List.Subheader> */}
+        <List.Item
+          titleStyle={{ color: theme.text.main }}
+          style={{ borderStyle: 'solid', borderColor: theme.mainLight, borderBottomWidth: 1 }}
+          title="First Item" left={() => <List.Icon icon="folder" />}
+          onPress={() => { navigation.navigate('Card') }}
+        />
+        <List.Item
+          title="Second Item"
+          titleStyle={{ color: theme.text.main }}
+          left={() => <List.Icon color={theme.main} icon="folder" />}
+        />
+      </List.Section>
+
+      <IconButton
+        icon="plus"
+        mode='contained'
+        iconColor={theme.text.main}
+        size={30}
+        onPress={() => {
+          alert('This is a button!')
+        }}
+        style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: theme.mainLight }}
+      // style={{ alignSelf: 'flex-end' }}
       />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 22,
-    backgroundColor: '#fff'
-  },
-  item: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    marginVertical: 8,
-    backgroundColor: '#f9c2ff'
-  },
-  title: {
-    fontSize: 32
-  }
-})
 
 export default Home

@@ -16,22 +16,22 @@ functions:
     handler: src/handler.test
     events:
       - httpApi:
-          path: /flash-card/test
+          path: /test
           method: get
   getCard:
     handler: src/handler.getCard
     events:
       - httpApi:
-          path: /flash-card/card/get
+          path: /card/get
           method: any
       - httpApi:
-          path: /flash-card/card/get/{card_id}
+          path: /card/get/{card_id}
           method: any
   addCard:
     handler: src/handler.addCard
     events:
       - httpApi:
-          path: /flash-card/card/add
+          path: /card/add
           method: post
 
 resources:
