@@ -5,9 +5,19 @@ import { DynamoDB } from 'aws-sdk'
 import * as card from './card/card'
 const dynamoDB = new DynamoDB.DocumentClient()
 
+const defaultHeader = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': 'http://localhost:8082',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT'
+}
+
 export const test: APIGatewayProxyHandler = async (event, context) => {
   return {
     statusCode: 200,
+    headers: {
+      ...defaultHeader
+    },
     body: JSON.stringify({
       message: 'connection is good!',
       input: event,
@@ -26,12 +36,18 @@ export const getCard: APIGatewayProxyHandler = async (event, context) => {
     const data = await dynamoDB.scan(params).promise()
     return {
       statusCode: 200,
+      headers: {
+        ...defaultHeader
+      },
       body: JSON.stringify(data.Items)
     }
   } catch (error) {
     console.error(error)
     return {
       statusCode: 500,
+      headers: {
+        ...defaultHeader
+      },
       body: JSON.stringify({ message: 'Internal Server Error' })
     }
   }
@@ -44,6 +60,9 @@ export const addCard: APIGatewayProxyHandler = async (event, context) => {
     const res = await card.addCard(cardData)
     return {
       statusCode: 200,
+      headers: {
+        ...defaultHeader
+      },
       body: res
     }
   } catch (error) {
@@ -51,6 +70,9 @@ export const addCard: APIGatewayProxyHandler = async (event, context) => {
     console.log(JSON.stringify(error))
     return {
       statusCode: 500,
+      headers: {
+        ...defaultHeader
+      },
       body: JSON.stringify({ message: 'Internal Server Error' })
     }
   }

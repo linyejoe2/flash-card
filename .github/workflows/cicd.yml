@@ -1,0 +1,84 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      ### Frontend - Expo Android App ###
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Expo CLI
+        run: |
+          npm install -g expo-cli eas-cli
+
+      - name: Install frontend dependencies
+        run: |
+          npm install
+
+      - name: Log in to Expo
+        run: |
+          eas login --token ${{ vars.VERSION }}
+
+      - name: Build APK
+        run: |
+          eas build --platform android --profile preview
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: Android APK Release
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to GitHub
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./frontend/builds/app.apk
+          asset_name: app.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      ### Backend - Go AWS Lambda ###
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.19'
+
+      - name: Install backend dependencies
+        run: |
+          cd server && go mod tidy
+
+      - name: Build Lambda Function
+        run: |
+          cd server && GOOS=linux GOARCH=amd64 go build -o bin/lambda main.go
+
+      - name: Install Serverless Framework
+        run: |
+          npm install -g serverless
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Deploy Lambda
+        run: |
+          cd server && serverless deploy
